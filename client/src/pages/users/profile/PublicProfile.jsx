@@ -1,16 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Share2, Link2, Check, Circle, X, Copy, Send } from "lucide-react";
+import {
+  Share2,
+  Link2,
+  Check,
+  Circle,
+  X,
+  Copy,
+  Send,
+  Icon,
+  MessageCircle,
+  SendHorizonal,
+  MessageCircleAlert,
+} from "lucide-react";
 
 import {
-  FaInstagram,
-  FaFacebook,
-  FaYoutube,
   FaFacebookF,
   FaWhatsapp,
   FaLinkedinIn,
   FaFacebookMessenger,
   FaSnapchatGhost,
+  FaYoutube,
+  FaInstagram,
+  FaFacebook,
+  FaLinkedin,
+  FaGithub,
+  FaTwitter,
 } from "react-icons/fa";
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,17 +34,17 @@ import { getPublicProfileService } from "../../../services/profileService";
 
 // YOUR ORIGINAL THEME
 const dummyTheme = {
-  background: "#230813",
-  cardBackground: "#3A1020",
-  titleColor: "#FFF0F3",
-  bioColor: "#FFF0F3",
-  buttonBackground: "#581126",
-  buttonTextColor: "#FFF0F3",
-  accentColor: "#FF4D6D",
-  borderColor: "#70203A",
+  background: "#071A14",
+  cardBackground: "#102B20",
+  titleColor: "#ECFDF5",
+  bioColor: "#A7F3D0",
+  buttonBackground: "#14532D",
+  buttonTextColor: "#FFFFFF",
+  accentColor: "#34D399",
+  borderColor: "#24513D",
   fontFamily: "var(--font-sans)",
   cardRadius: "30px",
-  cardShadow: "0 24px 70px rgba(0, 0, 0, 0.45)",
+  cardShadow: "0 24px 70px rgba(0,0,0,0.4)",
 };
 
 // YOUR ORIGINAL ANIMATIONS
@@ -57,11 +72,6 @@ const itemVariants = {
 };
 
 // YOUR ORIGINAL SOCIAL LINKS
-const socialLinks = [
-  { name: "Instagram", icon: FaInstagram, url: "#" },
-  { name: "Facebook", icon: FaFacebook, url: "#" },
-  { name: "YouTube", icon: FaYoutube, url: "#" },
-];
 
 const PublicProfile = () => {
   const { username } = useParams();
@@ -91,6 +101,8 @@ const PublicProfile = () => {
 
     fetchProfile();
   }, [username]);
+
+  console.log(profile);
 
   // NEW: OPEN MODAL
   const handleShare = () => {
@@ -186,6 +198,18 @@ const PublicProfile = () => {
       url: `https://www.snapchat.com/scan?attachmentUrl=${encodedUrl}`,
     },
   ];
+
+  const socialIcons = {
+    youtube: FaYoutube,
+    instagram: FaInstagram,
+    facebook: FaFacebook,
+    linkedin: FaLinkedin,
+    github: FaGithub,
+    x: FaTwitter,
+    threads: MessageCircle,
+    telegram: SendHorizonal,
+    whatsapp: MessageCircleAlert,
+  };
 
   return (
     <main
@@ -316,25 +340,33 @@ const PublicProfile = () => {
           </motion.p>
 
           {/* ORIGINAL SOCIAL ICONS */}
+
           <motion.div
             variants={itemVariants}
             className="mt-5 flex items-center gap-5"
           >
-            {socialLinks.map(({ name, icon: Icon, url }, index) => (
-              <motion.a
-                key={name}
-                href={url}
-                aria-label={name}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                whileHover={{ y: -5, scale: 1.12 }}
-                whileTap={{ scale: 0.9 }}
-                style={{ color: theme.titleColor }}
-              >
-                <Icon size={23} />
-              </motion.a>
-            ))}
+            {(profile?.socialMediaLinks || []).map((socialMedia, index) => {
+              const IconComponent =
+                socialIcons[socialMedia.icon?.toLowerCase()] || Globe;
+
+              return (
+                <motion.a
+                  key={socialMedia._id || `${socialMedia.platform}-${index}`}
+                  href={socialMedia.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={socialMedia.platform}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + index * 0.1 }}
+                  whileHover={{ y: -5, scale: 1.12 }}
+                  whileTap={{ scale: 0.9 }}
+                  style={{ color: theme.titleColor }}
+                >
+                  <IconComponent size={23} />
+                </motion.a>
+              );
+            })}
           </motion.div>
         </motion.div>
 

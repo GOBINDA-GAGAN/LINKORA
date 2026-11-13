@@ -14,6 +14,7 @@ import {
 // Routes
 import profileRouter from "./routes/profile.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import socialmediarouter from "./routes/socialmedialink.routes.js";
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.get("/", (req, res) => {
 // API Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/profile", profileRouter);
+app.use("/api/v1/social-media-links", socialmediarouter);
 
 // Error Handling
 app.use(notFound);

@@ -1,6 +1,7 @@
 import env from "../config/env.js";
 import { profilePerAccount } from "../constants/profileConstants.js";
 import { Profile } from "../models/profile.models.js";
+import SocialMediaLink from "../models/socialmedialink.model.js";
 import { User } from "../models/user.model.js";
 
 // Create new profile
@@ -476,32 +477,68 @@ export const previewProfile = async (req, res) => {
 };
 
 // Get public profile
+
+
 export const getPublicProfile = async (req, res) => {
   try {
     const { username } = req.params;
 
     const profile = await Profile.findOne({
-      username: username.toLowerCase(),
+      username,
       isPublished: true,
-    }).select("-user");
+    }).lean();
 
     if (!profile) {
       return res.status(404).json({
         success: false,
-        message: "Profile not found or not published",
+        message: "Public profile not found",
+        data: null,
       });
     }
+
+    const socialMediaLinks = await SocialMediaLink.find({
+      profileId: profile._id,
+      isActive: true,
+    })
+      .select("platform username position")
+      .sort({ position: 1 })
+      .lean();
+
+    const socialUrls = {
+      youtube: (username) => `https://youtube.com/${username}`,
+      instagram: (username) => `https://instagram.com/${username.replace("@", "")}`,
+      facebook: (username) => `https://facebook.com/${username}`,
+      linkedin: (username) => `https://linkedin.com/in/${username}`,
+      github: (username) => `https://github.com/${username}`,
+      x: (username) => `https://x.com/${username.replace("@", "")}`,
+      threads: (username) => `https://threads.net/${username}`,
+      telegram: (username) => `https://t.me/${username}`,
+      whatsapp: (username) => `https://wa.me/${username}`,
+    };
+
+    const formattedSocialLinks = socialMediaLinks.map((link) => ({
+      platform: link.platform,
+      username: link.username,
+      url: socialUrls[link.platform]?.(link.username) || null,
+      icon: link.platform,
+      position: link.position,
+    }));
 
     return res.status(200).json({
       success: true,
       message: "Public profile fetched successfully",
-      data: profile,
+      data: {
+        ...profile,
+        socialMediaLinks: formattedSocialLinks,
+      },
     });
+
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: "Failed to fetch public profile",
-      error: error.message,
+      data: null,
     });
   }
 };
+
