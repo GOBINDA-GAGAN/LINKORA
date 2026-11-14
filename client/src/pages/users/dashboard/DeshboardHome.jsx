@@ -202,7 +202,7 @@ export const Home = () => {
                   </button>
 
                   <a
-                    href="/dashboard/design"
+                    href="/home/link"
                     className="rounded-full bg-white/60 px-5 py-2.5 text-sm font-semibold text-[#171717] transition hover:bg-white"
                   >
                     Edit

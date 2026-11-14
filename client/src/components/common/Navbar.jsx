@@ -116,7 +116,7 @@ const Navbar = () => {
 
         {/* Logo */}
         <motion.a
-          href="#home"
+          href="/home"
           onClick={() => handleNavigation("Home")}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
