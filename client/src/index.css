@@ -341,3 +341,10 @@
 .share-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #777780;
 }
+@layer components {
+  .field-input {
+    @apply w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition;
+    @apply focus:border-ring focus:ring-2 focus:ring-ring/20;
+    @apply placeholder:text-muted-foreground;
+  }
+}

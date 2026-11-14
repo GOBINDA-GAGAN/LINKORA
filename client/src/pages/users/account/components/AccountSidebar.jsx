@@ -109,7 +109,7 @@ const AccountSidebar = () => {
       {/* Back to App */}
       <div className="shrink-0 border-b border-sidebar-border px-4 py-4">
         <Link
-          to="/"
+          to="/home"
           className="group flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft
