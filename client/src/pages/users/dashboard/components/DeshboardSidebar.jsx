@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -67,7 +66,7 @@ const DeshboardSidebar = () => {
 
   const sidebarVariants = {
     expanded: { width: 260 },
-    collapsed: { width: 78 },
+    collapsed: { width: 72 },
   };
 
   const itemVariants = {
@@ -80,14 +79,14 @@ const DeshboardSidebar = () => {
     <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
 
       {/* LOGO */}
-      <div className="flex h-[68px] shrink-0 items-center justify-between border-b border-sidebar-border px-4">
+      <div className="flex h-[60px] shrink-0 items-center justify-between border-b border-sidebar-border px-3">
         <motion.a
-          href="/dashboard"
-          className="flex min-w-0 items-center gap-2.5 overflow-hidden"
+          href="/home"
+          className="flex min-w-0 items-center gap-2 overflow-hidden"
           whileTap={{ scale: 0.97 }}
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-primary text-white">
-            <Link2 size={19} />
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-primary text-white">
+            <Link2 size={18} />
           </div>
 
           <AnimatePresence>
@@ -99,10 +98,10 @@ const DeshboardSidebar = () => {
                 exit="exit"
                 className="flex items-center gap-2 whitespace-nowrap"
               >
-                <span className="font-headline text-xl font-bold tracking-tight">
+                <span className="font-headline text-lg font-bold tracking-tight">
                   Linkora
                 </span>
-                <span className="rounded-full bg-brand-secondary px-2 py-0.5 text-[10px] font-bold text-brand-primary">
+                <span className="rounded-full bg-brand-secondary px-1.5 py-0.5 text-[9px] font-bold text-brand-primary">
                   v1.0
                 </span>
               </motion.div>
@@ -116,7 +115,7 @@ const DeshboardSidebar = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-foreground md:flex"
+            className="hidden h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-foreground md:flex"
             title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -128,9 +127,9 @@ const DeshboardSidebar = () => {
                 transition={{ duration: 0.2 }}
               >
                 {collapsed ? (
-                  <PanelLeftOpen size={19} />
+                  <PanelLeftOpen size={17} />
                 ) : (
-                  <PanelLeftClose size={19} />
+                  <PanelLeftClose size={17} />
                 )}
               </motion.span>
             </AnimatePresence>
@@ -141,19 +140,20 @@ const DeshboardSidebar = () => {
         {isMobile && (
           <button
             onClick={() => setMobileOpen(false)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-sidebar-accent"
+            className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-sidebar-accent"
           >
-            <X size={20} />
+            <X size={19} />
           </button>
         )}
       </div>
 
       {/* NAVIGATION */}
-      <nav className="flex-1 space-y-7 overflow-y-auto overflow-x-hidden px-3 py-6">
+      <nav className="flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-2.5 py-3">
 
         {navigation.map((section) => (
-          <div key={section.title} className="space-y-2">
+          <div key={section.title} className="space-y-1">
 
+            {/* SECTION TITLE */}
             <AnimatePresence>
               {(!collapsed || isMobile) && (
                 <motion.p
@@ -161,13 +161,14 @@ const DeshboardSidebar = () => {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="px-3 pb-1 font-label text-[10px] font-bold tracking-[0.15em] text-muted-foreground"
+                  className="px-2.5 pb-0.5 font-label text-[9px] font-bold tracking-[0.13em] text-muted-foreground"
                 >
                   {section.title}
                 </motion.p>
               )}
             </AnimatePresence>
 
+            {/* NAVIGATION ITEMS */}
             {section.items.map((item) => {
               const Icon = item.icon;
               const isActive = active === item.href;
@@ -183,14 +184,14 @@ const DeshboardSidebar = () => {
                   whileHover={{ x: 2 }}
                   whileTap={{ scale: 0.97 }}
                   title={collapsed && !isMobile ? item.name : ""}
-                  className={`group relative flex h-10 items-center gap-3 overflow-hidden rounded-lg px-3 text-sm font-medium transition-colors duration-200 ${
+                  className={`group relative flex h-9 items-center gap-2.5 overflow-hidden rounded-md px-2.5 text-xs font-medium transition-colors duration-200 ${
                     isActive
                       ? "bg-brand-primary text-white shadow-sm"
                       : "text-muted-foreground hover:bg-sidebar-accent hover:text-foreground"
                   } ${collapsed && !isMobile ? "justify-center px-0" : ""}`}
                 >
                   <Icon
-                    size={18}
+                    size={17}
                     strokeWidth={isActive ? 2.3 : 1.8}
                     className="shrink-0"
                   />
@@ -202,7 +203,7 @@ const DeshboardSidebar = () => {
                         initial="hidden"
                         animate="visible"
                         exit="exit"
-                        className="flex-1 whitespace-nowrap text-[12px]"
+                        className="flex-1 whitespace-nowrap text-[11.5px]"
                       >
                         {item.name}
                       </motion.span>
@@ -213,9 +214,7 @@ const DeshboardSidebar = () => {
                   {isActive && (
                     <motion.span
                       layoutId="sidebar-active"
-                      className={`absolute right-2 h-1.5 w-1.5 rounded-full bg-brand-secondary ${
-                        collapsed && !isMobile ? "right-2" : ""
-                      }`}
+                      className="absolute right-2 h-1.5 w-1.5 rounded-full bg-brand-secondary"
                       transition={{
                         type: "spring",
                         stiffness: 400,
@@ -230,14 +229,14 @@ const DeshboardSidebar = () => {
         ))}
       </nav>
 
-      {/* BOTTOM */}
-      <div className="shrink-0 border-t border-sidebar-border p-3">
+      {/* BOTTOM ACCOUNT */}
+      <div className="shrink-0 border-t border-sidebar-border p-2">
         <div
-          className={`flex items-center gap-3 rounded-lg bg-sidebar-accent/60 p-2 ${
+          className={`flex items-center gap-2 rounded-md bg-sidebar-accent/60 p-1.5 ${
             collapsed && !isMobile ? "justify-center" : ""
           }`}
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-purple text-sm font-bold text-white">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-purple text-xs font-bold text-white">
             G
           </div>
 
@@ -250,10 +249,10 @@ const DeshboardSidebar = () => {
                 exit="exit"
                 className="min-w-0 flex-1"
               >
-                <p className="truncate text-xs font-semibold">
+                <p className="truncate text-[11px] font-semibold">
                   My Account
                 </p>
-                <p className="truncate text-[10px] text-muted-foreground">
+                <p className="truncate text-[9px] text-muted-foreground">
                   Free Plan
                 </p>
               </motion.div>
@@ -261,7 +260,7 @@ const DeshboardSidebar = () => {
           </AnimatePresence>
 
           {(!collapsed || isMobile) && (
-            <ChevronRight size={16} className="text-muted-foreground" />
+            <ChevronRight size={15} className="text-muted-foreground" />
           )}
         </div>
       </div>
@@ -284,9 +283,9 @@ const DeshboardSidebar = () => {
         <SidebarContent />
       </motion.aside>
 
-      {/* MOBILE HEADER BUTTON */}
-      <div className="fixed left-0 top-0 z-30 flex w-full items-center justify-between border-b border-border bg-background px-4 py-3 md:hidden">
-        <a href="/dashboard" className="flex items-center gap-2">
+      {/* MOBILE HEADER */}
+      <div className="fixed left-0 top-0 z-30 flex w-full items-center justify-between border-b border-border bg-background px-4 py-2.5 md:hidden">
+        <a href="/home" className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-primary text-white">
             <Link2 size={17} />
           </div>
@@ -295,9 +294,9 @@ const DeshboardSidebar = () => {
 
         <button
           onClick={() => setMobileOpen(true)}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border border-border hover:bg-muted"
+          className="flex h-8 w-8 items-center justify-center rounded-lg border border-border hover:bg-muted"
         >
-          <Menu size={21} />
+          <Menu size={20} />
         </button>
       </div>
 
